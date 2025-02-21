@@ -6,15 +6,21 @@
  * @return {object}
  */
 function convertToObject(sourceString) {
-  const result = {};
+  const parts = sourceString
+    .split(';')
+    .map((part) => part.trim())
+    .filter((part) => part.length > 0)
+    .map((part) => {
+      const [key, value] = part.split(':');
 
-  for (const part of sourceString.split(';')) {
-    const [key, value] = part.split(':').map((item) => item.trim());
+      return [key.trim(), value.trim()];
+    });
 
+  return parts.reduce((result, [key, value]) => {
     result[key] = value;
-  }
 
-  return result;
+    return result;
+  }, {});
 }
 
 module.exports = convertToObject;
